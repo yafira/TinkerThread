@@ -312,16 +312,8 @@ function createConnectionNodes(component) {
 		nodeElement.dataset.componentId = component.dataset.id
 
 		// Position the node relative to component
-		nodeElement.style.position = 'absolute'
 		nodeElement.style.left = `${nodeConfig.x - 5}px`
 		nodeElement.style.top = `${nodeConfig.y - 5}px`
-		nodeElement.style.width = '10px'
-		nodeElement.style.height = '10px'
-		nodeElement.style.borderRadius = '50%'
-		nodeElement.style.backgroundColor = '#ffd700'
-		nodeElement.style.border = '1px solid black'
-		nodeElement.style.cursor = 'pointer'
-		nodeElement.style.zIndex = '10'
 
 		component.appendChild(nodeElement)
 

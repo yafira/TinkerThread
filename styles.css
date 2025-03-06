@@ -142,8 +142,8 @@ body {
 /* Dropped Components */
 .dropped-component {
 	position: absolute;
-	background-color: #76c7c0;
-	border: 1px solid #3c8887;
+	/* background-color: #76c7c0;
+	border: 1px solid #3c8887; */
 	color: #000;
 	border-radius: 4px;
 	text-align: center;
@@ -167,13 +167,22 @@ body {
 	opacity: 0.8;
 }
 
+/*Connection Types*/
+.connection-type {
+	cursor: pointer; /* Change cursor to indicate clickable but not draggable */
+}
+
+.connection-type[draggable='true'] {
+	cursor: not-allowed; /* Fallback for any draggable connection types */
+}
+
 /* Connection Nodes */
 .connection-node {
 	position: absolute;
+	background-color: #fb00ff;
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
-	background-color: #ffd700;
 	border: 1px solid #000;
 	cursor: pointer;
 	z-index: 10;
