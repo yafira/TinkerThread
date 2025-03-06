@@ -233,11 +233,20 @@ function createSidebarComponents() {
 	sidebar.innerHTML = '<h2>Components</h2>' // Clear existing content
 
 	// Helper function to create elements
-	function createSidebarElement(id, className, type, name, styles = {}) {
+	function createSidebarElement(
+		id,
+		className,
+		type,
+		name,
+		styles = {},
+		isDraggable = true
+	) {
 		const element = document.createElement('div')
 		element.id = id
 		element.classList.add('component', ...className.split(' '))
-		element.setAttribute('draggable', 'true')
+		if (isDraggable) {
+			element.setAttribute('draggable', 'true') // Only set draggable for non-connection types
+		}
 		element.setAttribute('data-type', type)
 		element.textContent = name
 
@@ -248,14 +257,14 @@ function createSidebarComponents() {
 		return element
 	}
 
-	// Add Electronic Components
+	// Add Electronic Components (draggable)
 	Object.entries(componentTypes).forEach(([typeId, type]) => {
 		sidebar.appendChild(
 			createSidebarElement(typeId, 'component', typeId, type.name)
 		)
 	})
 
-	// Add Connection Types
+	// Add Connection Types (not draggable)
 	sidebar.appendChild(document.createElement('h2')).textContent =
 		'Connection Types'
 	connectionTypes.forEach((connection) => {
@@ -265,12 +274,13 @@ function createSidebarComponents() {
 				'component connection-type',
 				'connection',
 				connection.name,
-				{ backgroundColor: connection.color }
+				{ backgroundColor: connection.color },
+				false // Make connection types non-draggable
 			)
 		)
 	})
 
-	// Add Fabric Swatches
+	// Add Fabric Swatches (draggable)
 	sidebar.appendChild(document.createElement('h2')).textContent =
 		'Fabric Swatches'
 	fabricSwatches.forEach((fabric) => {
@@ -636,6 +646,11 @@ function setupEventListeners() {
 	// Drag and drop for components
 	document.querySelectorAll('.component').forEach((component) => {
 		component.addEventListener('dragstart', (event) => {
+			// Prevent dragging for connection types
+			if (component.classList.contains('connection-type')) {
+				event.preventDefault()
+				return
+			}
 			event.dataTransfer.setData('text', component.id)
 		})
 	})
