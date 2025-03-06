@@ -16,7 +16,7 @@
 ## ✿ Moodboard / Inspiration
 
 <p align="center">
-  <img width="900" height="900" src="moodboard.png">
+  <img width="800" height="800" src="moodboard.png">
 </p>
 
 ## ✿ Live Demo
