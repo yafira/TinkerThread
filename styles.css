@@ -231,6 +231,34 @@ body {
 	color: #0c5460;
 	border: 1px solid #bee5eb;
 }
+/* Footer Styles */
+.footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	padding: 10px 0;
+	background-color: #ddcef4; /* Match your header color */
+	color: #000000; /* Match your header text color */
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 14px;
+	box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+	z-index: 1000; /* Ensure it stays above other content */
+}
+
+/* Footer */
+
+.footer a {
+	color: #000000; /* Match your header text color */
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.footer a:hover {
+	color: mintcream;
+	text-decoration: none;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
