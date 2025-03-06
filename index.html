@@ -3,37 +3,38 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>TinkerThread</title>
+		<title>TinkerThread: Soft Circuit Simulator</title>
 		<link rel="stylesheet" href="styles.css" />
 	</head>
 	<body>
 		<div class="container">
-			<h1>TinkerThread: Soft Circuit Simulator</h1>
-
-			<!-- Background Selection -->
-			<div class="background-selector">
-				<label for="background-select">Choose background:</label>
-				<select id="background-select">
-					<option value="blank">Blank</option>
-					<option value="graph">Graph</option>
-					<option value="dotted">Dotted</option>
-				</select>
-			</div>
-
-			<!-- Electronic Components -->
-			<div class="sidebar">
-				<h2>Components</h2>
-				<div id="led" class="component" draggable="true">LED</div>
-				<div id="button" class="component" draggable="true">Button</div>
-				<div id="thread" class="component" draggable="true">
-					Conductive Thread
+			<header class="header">
+				<h1>TinkerThread: Soft Circuit Simulator</h1>
+				<div class="controls">
+					<!-- Background Selection -->
+					<div class="control-group">
+						<label for="background-select">Background:</label>
+						<select id="background-select" class="control-input"></select>
+					</div>
 				</div>
-			</div>
+			</header>
 
-			<!-- Canvas Area -->
-			<div id="canvas-container" class="canvas-container">
-				<div id="canvas"></div>
-			</div>
+			<main class="main-content">
+				<!-- Sidebar for Components -->
+				<aside class="sidebar">
+					<h2>Components</h2>
+					<div id="led" class="component" draggable="true">LED</div>
+					<div id="button" class="component" draggable="true">Button</div>
+					<div id="battery" class="component" draggable="true">Battery</div>
+					<div id="resistor" class="component" draggable="true">Resistor</div>
+				</aside>
+
+				<!-- Canvas Area -->
+				<div id="canvas-container" class="canvas-container">
+					<div id="canvas" class="canvas"></div>
+					<div id="wires-container"></div>
+				</div>
+			</main>
 		</div>
 
 		<script src="script.js"></script>
