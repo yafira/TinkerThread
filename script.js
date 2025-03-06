@@ -69,7 +69,7 @@ const componentTypes = {
 		},
 		updateVisual: (component) => {
 			const state = component.dataset.state
-			const batteryColor = state === 'on' ? '#ffcc00' : '#aaaaaa'
+			const batteryColor = state === 'on' ? '#39FF14' : '#aaaaaa'
 			component.querySelector('.component-visual').style.backgroundColor =
 				batteryColor
 			component.querySelector('.component-label').textContent =
@@ -152,7 +152,7 @@ const componentTypes = {
 		style: () => {
 			return {
 				visual: {
-					backgroundColor: '#FFA500',
+					backgroundColor: '#FFE5B4',
 					width: '50px',
 					height: '15px',
 					position: 'relative',
@@ -339,7 +339,7 @@ function handleNodeClick(event) {
 			// First node selected
 			connectionStartNode = node
 			connectionStartComponent = findParentComponent(node)
-			node.style.boxShadow = '0 0 0 3px gold'
+			// node.style.boxShadow = '0 0 0 3px gold'
 		} else {
 			// Second node selected - create connection
 			const endComponent = findParentComponent(node)
@@ -894,7 +894,7 @@ function handleNodeClick(event) {
 			// First node selected
 			connectionStartNode = node
 			connectionStartComponent = findParentComponent(node)
-			node.style.boxShadow = '0 0 0 3px gold'
+			node.style.boxShadow = '0 0 0 3px rgba(82, 235, 158, 0.3)'
 
 			// Add visual indicator
 			canvas.style.cursor = 'crosshair'
