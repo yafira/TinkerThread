@@ -131,7 +131,7 @@ body {
 	flex-grow: 1;
 	height: 600px;
 	background-color: #fff;
-	border: 1px solid #ddd;
+	border: 10px solid #8eeccd;
 	border-radius: 8px;
 	position: relative;
 	overflow: hidden;
