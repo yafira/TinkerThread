@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>TinkerThread: Soft Circuit Simulator</title>
 		<link rel="stylesheet" href="styles.css" />
-
+		<!-- Favicon -->
 		<link
 			rel="icon"
 			type="image/png"
@@ -22,6 +22,18 @@
 		<meta name="apple-mobile-web-app-title" content="TinkerThread" />
 		<link rel="manifest" href="./assets/site.webmanifest" />
 	</head>
+	<!-- Open Graph Meta Tags -->
+	<meta property="og:title" content="TinkerThread: Soft Circuit Simulator" />
+	<meta
+		property="og:description"
+		content="Design and simulate soft circuits with TinkerThread. Drag and drop components, connect them, and see your circuit come to life!"
+	/>
+	<meta
+		property="og:image"
+		content="https://tinkerthread.netlify.app/images/og-image.jpg"
+	/>
+	<meta property="og:url" content="https://tinkerthread.netlify.app" />
+	<meta property="og:type" content="website" />
 	<body>
 		<div class="container">
 			<header class="header">
@@ -32,6 +44,9 @@
 						<label for="background-select">Background:</label>
 						<select id="background-select" class="control-input"></select>
 					</div>
+					<!-- Import/Export Buttons -->
+					<button id="export-btn" class="control-btn">Export</button>
+					<button id="import-btn" class="control-btn">Import</button>
 				</div>
 			</header>
 

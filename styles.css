@@ -48,6 +48,7 @@ body {
 	gap: 15px;
 	justify-content: center;
 	margin-top: 10px;
+	flex-wrap: wrap;
 }
 
 .control-group {
@@ -64,6 +65,24 @@ body {
 	font-family: inherit;
 	font-size: 12px;
 }
+
+.control-btn {
+	padding: 6px 12px;
+	background-color: #ddcef4;
+	border: 1px solid #9a7fcc;
+	border-radius: 4px;
+	cursor: pointer;
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 12px;
+	transition: background-color 0.2s;
+}
+
+.control-btn:hover {
+	background-color: #c5b0e6;
+}
+
+/* Rest of your existing CSS remains the same */
+/* ... [all your existing CSS code] ... */
 
 /* Main Content */
 .main-content {

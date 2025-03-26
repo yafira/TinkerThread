@@ -687,6 +687,33 @@ function setupEventListeners() {
 	// Canvas events
 	canvas.addEventListener('dragover', (event) => event.preventDefault())
 	canvas.addEventListener('drop', handleComponentDrop)
+
+	// import/export button listeners
+	document.getElementById('export-btn').addEventListener('click', exportCircuit)
+
+	document.getElementById('import-btn').addEventListener('click', () => {
+		const input = document.createElement('input')
+		input.type = 'file'
+		input.accept = '.json'
+
+		input.addEventListener('change', (e) => {
+			const file = e.target.files[0]
+			if (!file) return
+
+			const reader = new FileReader()
+			reader.onload = (e) => {
+				const success = importCircuit(e.target.result)
+				if (success) {
+					showNotification('Circuit imported successfully!', 'success')
+				} else {
+					showNotification('Error importing circuit', 'error')
+				}
+			}
+			reader.readAsText(file)
+		})
+
+		input.click()
+	})
 }
 
 // Handle Component Drop
@@ -1564,24 +1591,30 @@ function rotateComponent(component) {
 }
 
 // Export Circuit as JSON
+// Export Circuit as JSON
 function exportCircuit() {
 	const exportData = {
-		components: circuitState.components.map((component) => {
-			const componentElement = document.querySelector(
-				`.dropped-component[data-id="${component.id}"]`
-			)
-			return {
-				id: component.id,
-				type: component.type,
-				state: component.state,
+		components: Array.from(document.querySelectorAll('.dropped-component')).map(
+			(component) => ({
+				id: component.dataset.id,
+				type: component.dataset.type,
+				state: component.dataset.state || 'off',
 				position: {
-					left: parseInt(componentElement.style.left),
-					top: parseInt(componentElement.style.top),
+					left: parseInt(component.style.left),
+					top: parseInt(component.style.top),
 				},
-				rotation: componentElement.dataset.rotation || '0',
-			}
-		}),
-		connections: circuitState.connections,
+				rotation: component.dataset.rotation || '0',
+			})
+		),
+		connections: Array.from(
+			document.querySelectorAll('.component-connection')
+		).map((conn) => ({
+			fromComponent: conn.dataset.fromComponent,
+			fromNode: conn.dataset.fromNode,
+			toComponent: conn.dataset.toComponent,
+			toNode: conn.dataset.toNode,
+			type: conn.dataset.type,
+		})),
 		background: canvas.getAttribute('data-fabric-background') || 'blank',
 		pattern: backgroundSelect.value,
 	}
@@ -1593,8 +1626,9 @@ function exportCircuit() {
 	const a = document.createElement('a')
 	a.href = url
 	a.download = 'circuit-design.json'
+	document.body.appendChild(a)
 	a.click()
-
+	document.body.removeChild(a)
 	URL.revokeObjectURL(url)
 
 	showNotification('Circuit exported successfully!', 'success')
@@ -1639,30 +1673,35 @@ function importCircuit(jsonData) {
 			if (!componentType) return
 
 			// Create new element
-			const newElement = createDroppedComponent(componentType, {
-				clientX:
-					canvas.getBoundingClientRect().left +
-					compData.position.left +
-					componentTypes[compData.type].width / 2,
-				clientY:
-					canvas.getBoundingClientRect().top +
-					compData.position.top +
-					componentTypes[compData.type].height / 2,
-			})
-
-			// Set ID and state
+			const newElement = document.createElement('div')
+			newElement.classList.add('dropped-component')
+			newElement.dataset.type = compData.type
 			newElement.dataset.id = compData.id
 			newElement.dataset.state = compData.state
-
-			// Set position directly
+			newElement.style.position = 'absolute'
 			newElement.style.left = `${compData.position.left}px`
 			newElement.style.top = `${compData.position.top}px`
+			newElement.style.width = `${componentTypes[compData.type].width}px`
+			newElement.style.height = `${componentTypes[compData.type].height}px`
 
 			// Apply rotation if any
 			if (compData.rotation) {
-				newElement.dataset.rotation = compData.rotation
 				newElement.style.transform = `rotate(${compData.rotation}deg)`
+				newElement.dataset.rotation = compData.rotation
 			}
+
+			// Create visual representation
+			const visual = document.createElement('div')
+			visual.classList.add('component-visual')
+			newElement.appendChild(visual)
+
+			// Create label
+			const label = document.createElement('div')
+			label.classList.add('component-label')
+			newElement.appendChild(label)
+
+			// Style the component
+			styleDroppedComponent(newElement)
 
 			// Add to DOM
 			canvas.appendChild(newElement)
@@ -1672,7 +1711,7 @@ function importCircuit(jsonData) {
 			// Add connection nodes
 			createConnectionNodes(newElement)
 
-			// Update visual
+			// Update visual state
 			updateComponentVisual(newElement)
 
 			// Add to circuit state
@@ -1684,21 +1723,23 @@ function importCircuit(jsonData) {
 		})
 
 		// Create connections
-		circuitData.connections.forEach((connData) => {
-			const fromNode = document.querySelector(
-				`.dropped-component[data-id="${connData.fromComponent}"] .connection-node[data-node-name="${connData.fromNode}"]`
-			)
-			const toNode = document.querySelector(
-				`.dropped-component[data-id="${connData.toComponent}"] .connection-node[data-node-name="${connData.toNode}"]`
-			)
+		if (circuitData.connections) {
+			circuitData.connections.forEach((connData) => {
+				const fromNode = document.querySelector(
+					`.dropped-component[data-id="${connData.fromComponent}"] .connection-node[data-node-name="${connData.fromNode}"]`
+				)
+				const toNode = document.querySelector(
+					`.dropped-component[data-id="${connData.toComponent}"] .connection-node[data-node-name="${connData.toNode}"]`
+				)
 
-			if (fromNode && toNode) {
-				const connectionType =
-					connectionTypes.find((type) => type.id === connData.type) ||
-					connectionTypes[0]
-				createNodeConnection(fromNode, toNode, { id: connectionType.id })
-			}
-		})
+				if (fromNode && toNode) {
+					const connectionType =
+						connectionTypes.find((type) => type.id === connData.type) ||
+						connectionTypes[0]
+					createNodeConnection(fromNode, toNode, connectionType)
+				}
+			})
+		}
 
 		// Update circuit
 		updateCircuitConnections()
@@ -1816,7 +1857,6 @@ function init() {
 	setupEventListeners()
 	setupContextMenu()
 	initializeDropdowns()
-	createUIControls()
 
 	// Set default background
 	canvas.classList.add('blank')
@@ -1824,14 +1864,14 @@ function init() {
 	// Apply CSS to connection nodes
 	const nodeStyle = document.createElement('style')
 	nodeStyle.textContent = `
-    .connection-node {
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .connection-node:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
-    }
-  `
+        .connection-node {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .connection-node:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+    `
 	document.head.appendChild(nodeStyle)
 }
 
