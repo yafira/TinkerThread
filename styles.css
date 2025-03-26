@@ -68,7 +68,7 @@ body {
 
 .control-btn {
 	padding: 6px 12px;
-	background-color: #ddcef4;
+	background-color: #d8dbfd;
 	border: 1px solid #9a7fcc;
 	border-radius: 4px;
 	cursor: pointer;
@@ -80,9 +80,6 @@ body {
 .control-btn:hover {
 	background-color: #c5b0e6;
 }
-
-/* Rest of your existing CSS remains the same */
-/* ... [all your existing CSS code] ... */
 
 /* Main Content */
 .main-content {
